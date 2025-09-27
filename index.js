@@ -4,7 +4,6 @@ dotenv.config({ path: "./.env" });
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import bodyParser from "body-parser";
 import session from "express-session";
 
 import { connectDatabase } from "./models/db.js";
@@ -24,17 +23,19 @@ app.use(
   })
 );
 
-app.use(bodyParser.json({ extended: true }));
-app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(
   session({
-    resave: true,
-    saveUninitialized: true,
     secret: process.env.EXPRESS_SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
+      sameSite: "lax",
+    },
   })
 );
 
@@ -45,8 +46,10 @@ app.use("/", userRoutes, todoRoutes);
 app.all("*", (req, res, next) => {
   next(new ErrorHandler(`Requested URL not found ${req.url}`, 404));
 });
+
 app.use(generatedErrors);
 
-app.listen(process.env.PORT, () => {
-  console.log("connected to server 8080");
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
