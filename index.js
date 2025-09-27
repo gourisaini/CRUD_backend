@@ -19,8 +19,8 @@ connectDatabase();
 
 app.use(
   cors({
-    origin: "http://localhost:3000", // must match frontend
-    credentials: true, // allow cookies
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
   })
 );
 
