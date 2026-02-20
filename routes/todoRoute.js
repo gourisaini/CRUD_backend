@@ -1,5 +1,4 @@
 import express from "express";
-import { isAuthenticated } from "../middleware/auth.js";
 import {
   getAllTodos,
   getTodoById,
@@ -10,8 +9,6 @@ import {
 } from "../controllers/todoController.js";
 
 const router = express.Router();
-
-router.use(isAuthenticated);
 
 router.get("/todo", getAllTodos);
 router.post("/todo", createTodo);
