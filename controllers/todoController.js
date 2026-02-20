@@ -5,7 +5,7 @@ import ErrorHandler from "../utils/ErrorHandler.js";
 export const getAllTodos = catchAsyncErrors(async (req, res, next) => {
   const { page = 1, limit = 10, completed, priority } = req.query;
 
-  const filter = { user: req.id };
+  const filter = {};
   if (completed !== undefined) filter.completed = completed === "true";
   if (priority) filter.priority = priority;
 
@@ -26,7 +26,7 @@ export const getAllTodos = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const getTodoById = catchAsyncErrors(async (req, res, next) => {
-  const todo = await Todo.findOne({ _id: req.params.id, user: req.id });
+  const todo = await Todo.findById(req.params.id);
 
   if (!todo) {
     return next(new ErrorHandler("Todo not found", 404));
@@ -54,7 +54,7 @@ export const createTodo = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const updateTodo = catchAsyncErrors(async (req, res, next) => {
-  const todo = await Todo.findOne({ _id: req.params.id, user: req.id });
+  const todo = await Todo.findById(req.params.id);
 
   if (!todo) {
     return next(new ErrorHandler("Todo not found", 404));
@@ -73,7 +73,7 @@ export const updateTodo = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const deleteTodo = catchAsyncErrors(async (req, res, next) => {
-  const todo = await Todo.findOne({ _id: req.params.id, user: req.id });
+  const todo = await Todo.findById(req.params.id);
 
   if (!todo) {
     return next(new ErrorHandler("Todo not found", 404));
@@ -88,7 +88,7 @@ export const deleteTodo = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const toggleTodoStatus = catchAsyncErrors(async (req, res, next) => {
-  const todo = await Todo.findOne({ _id: req.params.id, user: req.id });
+  const todo = await Todo.findById(req.params.id);
 
   if (!todo) {
     return next(new ErrorHandler("Todo not found", 404));

@@ -25,14 +25,9 @@ const todoSchema = new mongoose.Schema(
     dueDate: {
       type: String,
     },
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "user",
-      required: true,
-    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-const Todo = mongoose.model("todo", todoSchema);
+const Todo = mongoose.model("Todo", todoSchema);
 export default Todo;
