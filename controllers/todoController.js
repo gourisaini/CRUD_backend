@@ -37,14 +37,8 @@ export const getTodoById = catchAsyncErrors(async (req, res, next) => {
     todo,
   });
 });
-
 export const createTodo = catchAsyncErrors(async (req, res, next) => {
-  const todoData = {
-    ...req.body,
-    user: req.id,
-  };
-
-  const todo = await Todo.create(todoData);
+  const todo = await Todo.create(req.body);
 
   res.status(201).json({
     success: true,
