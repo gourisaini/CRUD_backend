@@ -11,8 +11,6 @@ import { generatedErrors } from "./middleware/error.js";
 
 const app = express();
 
-connectDatabase();
-
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,
@@ -36,6 +34,12 @@ app.all("*", (req, res, next) => {
 app.use(generatedErrors);
 
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+
+const startServer = async () => {
+  await connectDatabase();
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+};
+
+startServer();
